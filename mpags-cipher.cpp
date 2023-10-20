@@ -18,6 +18,47 @@ std::string transformChar(const char in_char){
     return "";     
 }
 
+bool processCommandLine(
+    const std::vector<std::string>& args,
+    bool& helpRequested,
+    bool& versionRequested,
+    std::string& inputFileName,
+    std::string& outputFileName) {
+    
+    for (size_t i = 0; i < args.size(); i++) {
+        const std::string& arg = args[i];
+
+        if (arg == "-h" || arg == "--help") {
+            helpRequested = true;
+        }
+        else if (arg == "--version") {
+            versionRequested = true;
+        }
+        else if (arg == "-i") {
+            if (i + 1 < args.size()) {
+                inputFileName = args[i + 1];
+                i++; 
+            } else {
+                std::cerr << "Error: -i option requires an input file." << std::endl;
+                return false; 
+            }
+        }
+        else if (arg == "-o") {
+            if (i + 1 < args.size()) {
+                outputFileName = args[i + 1];
+                i++; 
+            } else {
+                std::cerr << "Error: -o option requires an output file." << std::endl;
+                return false; 
+            }
+        }
+        else {
+            std::cout << "Argument " << i << ": " << arg << std::endl;
+        }
+    }
+
+    return true; 
+}
 
 
 
@@ -27,42 +68,23 @@ int main(int argc, char* argv[])
 {
   std::string inputFileName;
   std::string outputFileName;
+  bool helpRequested = false;
+  bool versionRequested = false;
   const std::vector<std::string> cmdLineArgs { argv, argv+argc };
 
-  for (int i = 1; i < argc; i++) {
-        std::string arg = argv[i];
-        if (arg == "-h" || arg == "--help") {
-            std::cout << "Help message: Here is a program for the day 1 course exercise 7" << std::endl;
-            std::cout << "Input the password, then it will be converted to upper letter." << std::endl;
-            std::cout << "Usage: " << argv[0] << " [options] [arguments]" << std::endl;
-            return 0; 
-        }
-        else if(arg == "--version"){
-          std::cout << "Program version: 0.1.0 (For the day 1 course)." << std::endl;
-          return 0;
-        }
-        else if(arg == "-i"){ if (i + 1 < argc) {
-                inputFileName = argv[i + 1];
-                std::cout << "Input file: " << inputFileName << std::endl;
-                i++;  
-            } else {
-                std::cerr << "Error: -i option requires an input file." << std::endl;
-                return 1;
-            }}
-        else if(arg == "-o"){ if (i + 1 < argc) {
-                outputFileName = argv[i + 1];
-                std::cout << "Output file: " << outputFileName << std::endl;
-                i++;  
-            } else {
-                std::cerr << "Error: -o option requires an output file." << std::endl;
-                return 1;
-            }       
-        }
-        else{
-          std::cout << "Argument " << i << ": " << argv[i] << std::endl; //If no option
-        }
-  }
-  
+  processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFileName, outputFileName);
+
+  if (helpRequested) {
+        std::cout << "Help message: Here is a program for the day 1 course exercise 7" << std::endl;
+        std::cout << "Input the password, then it will be converted to uppercase letters." << std::endl;
+        std::cout << "Usage: " << argv[0] << " [options] [arguments]" << std::endl;
+        return 0;
+    }
+
+    if (versionRequested) {
+        std::cout << "Program version: 0.2.0 (For the day 2 course)." << std::endl;
+        return 0;
+    }
 
 
   //variables
