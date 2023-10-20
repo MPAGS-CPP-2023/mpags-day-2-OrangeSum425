@@ -3,34 +3,19 @@
 #include <vector>
 
 std::string transformChar(const char in_char){
+    const std::string numberWords[] = {
+    "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE"
+    };
+
     if (std::isalpha(in_char)) {
         return std::string(1, std::toupper(in_char));}
-    
-    switch (in_char)
-    {
-    case '0':
-        return "ZERO";
-    case '1':
-        return "ONE";
-    case '2':
-        return "TWO";
-    case '3':
-        return "THREE";
-    case '4':
-        return "FOUR";
-    case '5':
-        return "FIVE";
-    case '6':
-        return "SIX";
-    case '7':
-        return "SEVEN";
-    case '8':
-        return "EIGHT";
-    case '9':
-        return "NINE";
-    default:
-        return "";
+    else if(std::isdigit(in_char)){
+        int digit = in_char-'0';    
+        if (digit >= 0 && digit <= 9) {
+        return numberWords[digit];
     }
+    }
+    return "";     
 }
 
 
@@ -81,14 +66,14 @@ int main(int argc, char* argv[])
 
 
   //variables
-  char in_char{'x'};
-  std::string out_str{""};
+char in_char{'x'};
+std::string out_str{""};
 
   // Take letter from input:
- std::cout << "Enter characters: ";
+std::cout << "Enter characters: ";
 while (std::cin >> in_char) {
     out_str +=transformChar(in_char);}
 
     
-std::cout << out_str << std::endl;
+std::cout << "Transformed result: "<< out_str << std::endl;
 }
